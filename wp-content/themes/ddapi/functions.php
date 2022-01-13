@@ -1,4 +1,16 @@
 <?php 
+// function add_cors_http_header(){
+//   header("Access-Control-Allow-Origin: *");
+// }
+// add_action('init','add_cors_http_header');
+function var_error_log( $object=null ){
+  ob_start();                    // start buffer capture
+  var_dump( $object );           // dump the values
+  $contents = ob_get_contents(); // put the buffer into a variable
+  ob_end_clean();                // end capture
+  error_log( $contents );        // log contents of the result of var_dump( $object )
+}
+
 include("inc/reset-password.php");
 
 remove_action('rest_api_init', 'create_initial_rest_routes', 99);
@@ -31,13 +43,7 @@ add_action( 'rest_api_init', function () {
     ) );
   } );
 
-  function var_error_log( $object=null ){
-    ob_start();                    // start buffer capture
-    var_dump( $object );           // dump the values
-    $contents = ob_get_contents(); // put the buffer into a variable
-    ob_end_clean();                // end capture
-    error_log( $contents );        // log contents of the result of var_dump( $object )
-}
+  
 
 
   function ddapi_update_todo( $data ) {
@@ -58,10 +64,7 @@ add_action( 'rest_api_init', function () {
     ) );
   } );
 
-function add_cors_http_header(){
-    header("Access-Control-Allow-Origin: *");
-}
-add_action('init','add_cors_http_header');
+
 
 
 

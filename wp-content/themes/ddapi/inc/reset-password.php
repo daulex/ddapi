@@ -21,7 +21,7 @@ function runRetrivePassword($data){
     }else{
         $app_url = "https://app.dailydo.lv";
     }
-    
+
     $message .= $app_url . '/user/reset/?em='.rawurlencode($user_email).'&to='.$key;
     
 
@@ -39,5 +39,28 @@ add_action('rest_api_init', function () {
     register_rest_route('ddapi', '/reset-password/(?P<email>\S+)', array(
         'methods' => 'GET',
         'callback' => 'runRetrivePassword'
+    ));
+});
+
+function runResetPassword($data){
+    $parsed = json_decode($data->get_body());
+    $user = get_user_by('email', $parsed->username);
+    $validation = check_password_reset_key($parsed->key, $user->data->user_login);
+    if(
+        $validation && 
+        isset($validation->data) && 
+        isset($validation->data->user_login) && 
+        $user->data->user_login === $validation->data->user_login
+    ){
+        wp_set_password($parsed->password, $validation->data->ID);
+        return json_encode(1);
+    }
+    return json_encode(0);
+}
+
+add_action('rest_api_init', function () {
+    register_rest_route('ddapi', '/reset-password/', array(
+        'methods' => 'POST',
+        'callback' => 'runResetPassword'
     ));
 });
