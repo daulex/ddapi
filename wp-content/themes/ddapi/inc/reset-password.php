@@ -1,5 +1,6 @@
 <?php
 function runRetrivePassword($data){
+    
     global $wpdb, $wp_hasher;
     $user_data = get_user_by('email',  $data['email']);
     if (!$user_data) return array('result' => true);
@@ -15,8 +16,14 @@ function runRetrivePassword($data){
     $message .= __('To reset your password, visit the following address:') . "\r\n\r\n";
     // $message .= network_site_url("wp-login.php?action=rp&to=$key&em=" . rawurlencode($user_login), 'login');
 
-    $message .= '/user/reset/?em='.rawurlencode($user_email).'&to='.$key;
-
+    if(get_site_url() === "http://ddapi.awave.site"){
+        $app_url = "http://localhost:3000";
+    }else{
+        $app_url = "https://app.dailydo.lv";
+    }
+    
+    $message .= $app_url . '/user/reset/?em='.rawurlencode($user_email).'&to='.$key;
+    
 
 
     $title = __('DailyDo.lv Password Reset');
