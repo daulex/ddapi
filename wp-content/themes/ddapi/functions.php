@@ -1,17 +1,12 @@
 <?php 
-// function add_cors_http_header(){
-//   header("Access-Control-Allow-Origin: *");
-// }
-// add_action('init','add_cors_http_header');
-function var_error_log( $object=null ){
-  ob_start();                    // start buffer capture
-  var_dump( $object );           // dump the values
-  $contents = ob_get_contents(); // put the buffer into a variable
-  ob_end_clean();                // end capture
-  error_log( $contents );        // log contents of the result of var_dump( $object )
-}
+function add_cors_http_header(){
+  header("Access-Control-Allow-Origin: *");
+  }
+  add_action('plugins_loaded','add_cors_http_header');
+include("inc/utilities.php");
 
 include("inc/reset-password.php");
+include("inc/register.php");
 
 remove_action('rest_api_init', 'create_initial_rest_routes', 99);
 

@@ -16,11 +16,7 @@ function runRetrivePassword($data){
     $message .= __('To reset your password, visit the following address:') . "\r\n\r\n";
     // $message .= network_site_url("wp-login.php?action=rp&to=$key&em=" . rawurlencode($user_login), 'login');
 
-    if(get_site_url() === "http://ddapi.awave.site"){
-        $app_url = "http://localhost:3000";
-    }else{
-        $app_url = "https://app.dailydo.lv";
-    }
+    $app_url = get_app_url();
 
     $message .= $app_url . '/user/reset/?em='.rawurlencode($user_email).'&to='.$key;
     
