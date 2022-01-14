@@ -1,12 +1,14 @@
 <?php 
 function add_cors_http_header(){
   header("Access-Control-Allow-Origin: *");
-  }
-  add_action('plugins_loaded','add_cors_http_header');
+}
+add_action('plugins_loaded','add_cors_http_header');
+
 include("inc/utilities.php");
 
 include("inc/reset-password.php");
 include("inc/register.php");
+include("inc/verify-email.php");
 
 remove_action('rest_api_init', 'create_initial_rest_routes', 99);
 
