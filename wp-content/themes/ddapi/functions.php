@@ -14,12 +14,3 @@ require_once "routes/verify-email.php";
 require_once "routes/todo-update.php";
 require_once "routes/todo-get.php";
 
-  
-
-
-
-
-
-
-
-

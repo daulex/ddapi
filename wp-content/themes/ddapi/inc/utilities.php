@@ -1,4 +1,5 @@
 <?php
+
 function generate_username_from_email($email = false){
     if(!$email)
         return false;
@@ -19,6 +20,32 @@ function get_app_url(){
     if(get_site_url() === "http://ddapi.awave.site"){
         return "http://localhost:3000";
     }
-
     return "https://app.dailydo.lv";
+}
+
+function get_user_store($user_id = false, $what = "todo") {
+	if(!$user_id) return false;
+
+	$labels = array(
+		"todo" => array('todo_store', 'todo_lists'),
+		"template" => array('template_store', 'todo_templates')
+	);
+
+	// check if store exists
+	$store = get_user_meta($user_id, $labels[$what][0], true);
+
+	// if no store, create one
+	if(!$store){
+		$new_store = array(
+			'post_title'    => $what . ' ' . $user_id,
+			'post_status'   => 'publish',
+			'post_author'   => $user_id,
+			'post_type'     => $labels[$what][1]
+		);
+
+		$store = wp_insert_post( $new_store );
+		update_user_meta($user_id, $labels[$what][0], $store);
+	}
+
+	return intval($store);
 }

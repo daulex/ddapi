@@ -24,6 +24,9 @@ function runRegister($data){
 
             wp_mail( $email, __('dailyDo.lv email verification','ddapi') , $html);
 
+	        get_user_store($user_id, "todo");
+	        get_user_store($user_id, "template");
+
             return json_encode(1);
         }
     }
