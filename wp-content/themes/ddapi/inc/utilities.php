@@ -49,3 +49,11 @@ function get_user_store($user_id = false, $what = "todo") {
 
 	return intval($store);
 }
+
+function get_todo_label($date = false): string {
+	$format = 'Ymd';
+	$prefix = 'todo_';
+
+	if(!$date) return $prefix . date($format);
+	return $prefix . date($format, strtotime($date));
+}
