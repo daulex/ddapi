@@ -16,7 +16,7 @@ function var_error_log( $object=null ){
     error_log( $contents );        
 }
 
-function get_app_url(){
+function get_app_url(): string {
     if(get_site_url() === "http://ddapi.awave.site"){
         return "http://localhost:3000";
     }
@@ -56,4 +56,23 @@ function get_todo_label($date = false): string {
 
 	if(!$date) return $prefix . date($format);
 	return $prefix . date($format, strtotime($date));
+}
+
+
+function get_todos_by_store($store): array {
+	global $wpdb;
+	$store = intval($store);
+	$keys = $wpdb->get_results($wpdb->prepare(
+		"SELECT meta_key FROM wp_postmeta WHERE post_id=%d AND meta_key like 'todo_%'", $store
+	), ARRAY_A);
+	$res = array();
+	if($keys){
+		foreach($keys as $key){
+			$res[] = array(
+				"meta_key" => $key['meta_key'],
+				"meta_value" => maybe_unserialize(get_post_meta($store, $key['meta_key'], true))
+			);
+		}
+	}
+	return $res;
 }

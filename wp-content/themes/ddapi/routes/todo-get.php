@@ -2,11 +2,11 @@
 function ddapi_todo_get( $data ) {
 	$user = wp_get_current_user();
 	if($user->ID === 0) return 403;
+	$user_todo_store = get_user_store($user->ID);
 
 	if(!isset($data['id'])){
-		// GET Today's todo if one exists
 		$key = get_todo_label();
-		$user_todo_store = get_user_store($user->ID, "todo");
+
 		$todo = get_post_meta( $user_todo_store, $key, true);
 		if($todo === ""){
 			$res = 404;
@@ -17,24 +17,14 @@ function ddapi_todo_get( $data ) {
 	}
 
 	if($data['id'] === '000'){
-		return "TODO: Get all todos for current user";
+		return json_encode(get_todos_by_store($user_todo_store));
 	}
+
 	$todo_id = intval($data['id']);
-	return "TODO: Get todo with ID: " . $todo_id;
+	$todo = get_post_meta( $user_todo_store, 'todo_'.$todo_id, true);
+	if($todo === "") return 404;
+	return json_encode(maybe_unserialize($todo));
 
-	// $posts = get_posts( array(
-	// //   'author' => $data['id'],
-	// ) );
-
-	// if ( empty( $posts ) ) {
-	//   return null;
-	// }
-
-
-
-//	 return json_encode($user->ID === 0);
-
-	//	return json_encode(maybe_unserialize(get_post_meta( 6, 'todo', true)));
 }
 
 add_action( 'rest_api_init', function () {
