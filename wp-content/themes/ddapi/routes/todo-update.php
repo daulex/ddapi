@@ -6,12 +6,16 @@ function ddapi_todo_update( $data ): int {
 
 	if(!isset($data['id'])){
 
-		$key = get_todo_label();
+
 		$user_todo_store = get_user_store($user->ID, "todo");
 		$parsed = json_decode($data->get_body());
 
 		$new = maybe_serialize($parsed->todos);
-
+		if(isset($parsed->id)){
+			$key = 'todo_' . $parsed->id;
+		}else{
+			$key = get_todo_label();
+		}
 		update_post_meta( $user_todo_store, $key, $new);
 
 		return 200;
