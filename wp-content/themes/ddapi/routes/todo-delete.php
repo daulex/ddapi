@@ -6,10 +6,8 @@ function ddapi_todo_delete( $data ) {
 	$user_todo_store = get_user_store($user->ID);
 
 	$todo_id = intval($data['id']);
-	$todo = delete_post_meta( $user_todo_store, 'todo_'.$todo_id, true);
-	if($todo === "") return 404;
-	return json_encode(maybe_unserialize($todo));
 
+	return json_encode(delete_post_meta( $user_todo_store, 'todo_'.$todo_id));
 }
 
 add_action( 'rest_api_init', function () {
