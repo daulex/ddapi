@@ -6,7 +6,6 @@ function ddapi_todo_update( $data ): int {
 
 	if(!isset($data['id'])){
 
-
 		$user_todo_store = get_user_store($user->ID );
 		$parsed = json_decode($data->get_body());
 

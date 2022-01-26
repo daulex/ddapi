@@ -13,3 +13,4 @@ require_once "routes/register.php";
 require_once "routes/verify-email.php";
 require_once "routes/todo-update.php";
 require_once "routes/todo-get.php";
+require_once "routes/todo-delete.php";
