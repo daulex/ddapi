@@ -76,3 +76,21 @@ function get_todos_by_store($store): array {
 	}
 	return $res;
 }
+
+function get_templates_by_store($store): array {
+	global $wpdb;
+	$store = intval($store);
+	$keys = $wpdb->get_results($wpdb->prepare(
+		"SELECT meta_key FROM wp_postmeta WHERE post_id=%d AND meta_key like 'template_%'", $store
+	), ARRAY_A);
+	$res = array();
+	if($keys){
+		foreach($keys as $key){
+			$res[] = array(
+				"meta_key" => $key['meta_key'],
+				"meta_value" => maybe_unserialize(get_post_meta($store, $key['meta_key'], true))
+			);
+		}
+	}
+	return $res;
+}

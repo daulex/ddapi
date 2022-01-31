@@ -24,7 +24,7 @@ function ddapi_todo_update( $data ): int {
 }
 
 add_action( 'rest_api_init', function () {
-	register_rest_route( 'ddapi', '/todo/update', array(
+	register_rest_route( 'ddapi', '/todo', array(
 		'methods' => 'PUT',
 		'callback' => 'ddapi_todo_update',
 		'permission_callback' => '__return_true'
