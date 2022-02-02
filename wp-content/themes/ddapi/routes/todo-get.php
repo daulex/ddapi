@@ -28,7 +28,7 @@ function ddapi_todo_get( $data ) {
 }
 
 add_action( 'rest_api_init', function () {
-	register_rest_route( 'ddapi', '/todo/get(?:/(?P<id>\d+))?', array(
+	register_rest_route( 'ddapi', '/todo(?:/(?P<id>\d+))?', array(
 		'methods' => 'GET',
 		'callback' => 'ddapi_todo_get',
 		'permission_callback' => '__return_true'

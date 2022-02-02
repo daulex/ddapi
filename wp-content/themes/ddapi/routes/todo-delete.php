@@ -11,7 +11,7 @@ function ddapi_todo_delete( $data ) {
 }
 
 add_action( 'rest_api_init', function () {
-	register_rest_route( 'ddapi', '/todo/delete(?:/(?P<id>\d+))?', array(
+	register_rest_route( 'ddapi', '/todo(?:/(?P<id>\d+))?', array(
 		'methods' => 'DELETE',
 		'callback' => 'ddapi_todo_delete',
 		'permission_callback' => '__return_true'
