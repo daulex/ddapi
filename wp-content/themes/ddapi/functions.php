@@ -11,4 +11,5 @@ require_once "routes/reset-password.php";
 require_once "routes/register.php";
 require_once "routes/verify-email.php";
 require_once "routes/goal/goal-create.php";
+require_once "routes/goal/goal-get.php";
 
