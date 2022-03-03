@@ -22,3 +22,14 @@ function get_app_url(): string {
     }
     return "https://app.dailydo.lv";
 }
+
+function get_goal_array($goal = false){
+	if(!$goal) return;
+	return array(
+		"ID" => $goal->ID,
+		"title" => $goal->post_title,
+		"title_weekly" => get_post_meta($goal->ID, "title_weekly", true),
+		"goal_type" => get_post_meta($goal->ID, "goal_type", true),
+		"weekly_repetitions_goal" => get_post_meta($goal->ID, "weekly_repetitions_goal", true)
+	);
+}

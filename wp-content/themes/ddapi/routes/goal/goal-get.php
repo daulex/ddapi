@@ -1,26 +1,27 @@
 <?php
-function ddapi_goal_get( ) {
+function ddapi_goal_get($data) {
 
 	$user = wp_get_current_user();
 	if($user->ID === 0) return 403;
-
-	$goals = new WP_Query(array(
-		'post_type' => 'goal',
-		'post_status' => 'publish',
-		'author' => $user->ID
-	));
-	$goals = $goals->posts;
-	if(!count($goals)) return 404;
-	$res = array();
-	foreach($goals as $goal):
-		$res[] = array(
-			"ID" => $goal->ID,
-			"title" => $goal->post_title,
-			"title_weekly" => get_post_meta($goal->ID, "title_weekly", true),
-			"goal_type" => get_post_meta($goal->ID, "goal_type", true),
-			"weekly_repetitions_goal" => get_post_meta($goal->ID, "weekly_repetitions_goal", true)
-		);
-	endforeach;
+	if(isset($data['id'])){
+		$post = get_post($data['id']);
+		if($user->ID !== intval($post->post_author)) return 403;
+		$res = get_goal_array($post);
+	}else {
+		$goals = new WP_Query( array(
+			'post_type'   => 'goal',
+			'post_status' => 'publish',
+			'author'      => $user->ID
+		) );
+		$goals = $goals->posts;
+		if ( ! count( $goals ) ) {
+			return 404;
+		}
+		$res = array();
+		foreach ( $goals as $goal ):
+			$res[] = get_goal_array( $goal );
+		endforeach;
+	}
 	return json_encode($res);
 //	$parsed = json_decode($data->get_body());
 //

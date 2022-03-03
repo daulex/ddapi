@@ -4,24 +4,24 @@ function ddapi_goal_create( $data ): int {
 	$user = wp_get_current_user();
 	if($user->ID === 0) return 403;
 
-	$parsed = json_decode($data->get_body());
+	$parsed = $data->get_json_params();
 
 	$args = array(
 		'post_type' => 'goal',
-		'post_title' => $parsed->data->title,
+		'post_title' => $parsed['title'],
 		'post_status' => 'publish'
 	);
 
 	$goal = wp_insert_post($args);
 
-	if(isset($parsed->data->title_weekly)){
-		update_post_meta($goal, 'title_weekly', $parsed->data->title_weekly);
+	if(isset($parsed['title_weekly'])){
+		update_post_meta($goal, 'title_weekly', $parsed['title_weekly']);
 	}
 
-	if(isset($parsed->data->goal_type)){
-		update_post_meta($goal, 'goal_type', $parsed->data->goal_type);
-		if($parsed->data->goal_type === "Custom repetitions" && isset($parsed->data->weekly_repetitions_goal)){
-			update_post_meta($goal, 'weekly_repetitions_goal', $parsed->data->weekly_repetitions_goal);
+	if(isset($parsed['goal_type'])){
+		update_post_meta($goal, 'goal_type', $parsed['goal_type']);
+		if($parsed['goal_type'] === "Custom repetitions" && isset($parsed['weekly_repetitions_goal'])){
+			update_post_meta($goal, 'weekly_repetitions_goal', $parsed['weekly_repetitions_goal']);
 		}
 	}
 
