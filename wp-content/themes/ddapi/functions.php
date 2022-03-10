@@ -14,5 +14,6 @@ require_once "routes/goal/goal-create.php";
 require_once "routes/goal/goal-get.php";
 require_once "routes/goal/goal-update.php";
 require_once "routes/goal/goal-delete.php";
+require_once "routes/goal/goal-record.php";
 
 

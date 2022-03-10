@@ -24,7 +24,7 @@ function get_app_url(): string {
 }
 
 function get_goal_array($goal = false){
-	if(!$goal) return;
+	if(!$goal) return false;
 	return array(
 		"ID" => $goal->ID,
 		"title" => $goal->post_title,
@@ -32,4 +32,12 @@ function get_goal_array($goal = false){
 		"goal_type" => get_post_meta($goal->ID, "goal_type", true),
 		"weekly_repetitions_goal" => get_post_meta($goal->ID, "weekly_repetitions_goal", true)
 	);
+}
+function generate_record_key($date = false): string{
+	if($date){
+		$date = strtotime($date);
+	} else {
+		$date = time();
+	}
+	return "r".date("yW", $date);
 }
