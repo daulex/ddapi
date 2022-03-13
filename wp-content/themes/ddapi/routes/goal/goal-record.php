@@ -27,8 +27,12 @@ function ddapi_goal_record( $data ): int {
 			$record_value += intval($meta_value[date('w')]);
 		}
 	}
+	if(isset($meta_value[date('w')]) && $meta_value[date('w')] === 1){
+		$meta_value[date('w')] = 0;
+	}else{
+		$meta_value[date('w')] = $record_value;
+	}
 
-	$meta_value[date('w')] = $record_value;
 	$meta_value = maybe_serialize($meta_value);
 
 	update_post_meta($post->ID,$meta_key,$meta_value);

@@ -30,7 +30,9 @@ function get_goal_array($goal = false){
 		"title" => $goal->post_title,
 		"title_weekly" => get_post_meta($goal->ID, "title_weekly", true),
 		"goal_type" => get_post_meta($goal->ID, "goal_type", true),
-		"weekly_repetitions_goal" => get_post_meta($goal->ID, "weekly_repetitions_goal", true)
+		"weekly_repetitions_goal" => get_post_meta($goal->ID, "weekly_repetitions_goal", true),
+		"today" => generate_today_data($goal->ID),
+		"weekly_total" => generate_weekly_total($goal->ID)
 	);
 }
 function generate_record_key($date = false): string{
@@ -40,4 +42,24 @@ function generate_record_key($date = false): string{
 		$date = time();
 	}
 	return "r".date("yW", $date);
+}
+function generate_today_data($id){
+
+	$meta_key = generate_record_key();
+	$meta_value = maybe_unserialize(get_post_meta($id, $meta_key,true));
+
+	if(is_array($meta_value) && isset($meta_value[date('w')])){
+		return $meta_value[date('w')];
+	}
+	return 0;
+}
+function generate_weekly_total($id): int {
+	$meta_key = generate_record_key();
+	$meta_value = maybe_unserialize(get_post_meta($id, $meta_key,true));
+	if(!is_array($meta_value)){ return 0; }
+	$sum = 0;
+	foreach($meta_value as $value):
+		$sum += intval($value);
+	endforeach;
+	return $sum;
 }
