@@ -18,7 +18,7 @@ function runRegister($data){
             update_user_meta($user_id, 'account_activated', 0);
             update_user_meta($user_id, 'activation_code', $code);
 
-            $url = get_app_url(). '/user/verify/?key=' . base64_encode( serialize($string));
+            $url = get_app_url(). '/user/verify/' . base64_encode( serialize($string));
 
             $html = 'Please click the following link to verify your email for dailyDo.lv <br/><br/> <a href="'.$url.'">'.$url.'</a>';
 
