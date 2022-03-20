@@ -1,6 +1,6 @@
 <?php
 
-function ddapiGetUserEmail( $data ) {
+function ddapiGetUserEmail() {
 	$user = wp_get_current_user();
 	if($user->ID === 0) return 403;
    
@@ -15,7 +15,7 @@ function ddapiGetUserEmail( $data ) {
 });
 
 
-function ddapiPutUserEmail( $data ) {
+function ddapiPutUserEmail( $data ): int {
 	$user = wp_get_current_user();
 	if($user->ID === 0) return 403;
 
@@ -37,10 +37,23 @@ add_action('rest_api_init', function () {
 	));
 });
 
-function ddapiDeleteUser( $data ) {
+function ddapiDeleteUser(): int {
 	$user = wp_get_current_user();
 	if($user->ID === 0) return 403;
 
+	$goals = new WP_Query(array(
+		'author' => $user->ID,
+		'post_type' => 'goal',
+		'fields' => 'ids'
+	));
+	$goals = $goals->posts;
+	foreach($goals as $goal):
+		wp_delete_post($goal, true);
+	endforeach;
+
+
+
+	require_once( ABSPATH.'wp-admin/includes/user.php' );
 	wp_delete_user($user->ID);
 
 	return 200;
