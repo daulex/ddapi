@@ -40,9 +40,9 @@ function generate_record_key($date = false): string{
 	if($date){
 		$date = strtotime($date);
 	} else {
-		$date = time();
+		$date = strtotime('monday this week');
 	}
-	return "r".date("yW", $date);
+	return "rr_".date('Y_m_d', $date);
 }
 function generate_today_data($id){
 
@@ -69,7 +69,7 @@ function generate_goal_history($id) {
 	$keys = get_post_custom_keys($id);
 	$res = array();
 	foreach($keys as $key):
-		if(is_string($key) && $key[0] === "r"):
+		if(is_string($key) && substr($key, 0,3) === "rr_"):
 			$res[$key] = maybe_unserialize(get_post_meta($id, $key,true));
 		endif;
 	endforeach;
